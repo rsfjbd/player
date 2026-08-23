@@ -1,122 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1,
-               maximum-scale=1, user-scalable=no,
+      content="width=device-width,
+               initial-scale=1,
+               maximum-scale=1,
+               user-scalable=no,
                viewport-fit=cover">
 
 <title>RS Player Pro</title>
 
 <script src="https://content.jwplatform.com/libraries/IDzF9Zmk.js"></script>
+
 <script>
-jwplayer.key = "Khpp2dHxlBJHC8MCmLnBuV2jK/DwDnJMniwF6EO9HC/riJ712ZmbHg==";
+jwplayer.key =
+"Khpp2dHxlBJHC8MCmLnBuV2jK/DwDnJMniwF6EO9HC/riJ712ZmbHg==";
 </script>
 
-<link rel="preconnect" href="https://content.jwplatform.com">
+<link rel="preconnect"
+      href="https://content.jwplatform.com">
 
 <style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
 :root{
+
     --bg-1:#0a0a12;
     --bg-2:#14101f;
+
     --grad-a:#22d3ee;
     --grad-b:#a78bfa;
     --grad-c:#fb923c;
+
     --warn:#ffb84d;
     --alert:#ff5d5d;
+
     --text:#eef0f7;
     --text-dim:#7a7a92;
+
     --font:'Poppins','Segoe UI',sans-serif;
     --mono:'JetBrains Mono','Courier New',monospace;
 }
 
+
+/* =========================================================
+   RESET
+========================================================= */
+
 *{
+
     margin:0;
     padding:0;
+
     box-sizing:border-box;
+
+    -webkit-tap-highlight-color:transparent;
+
 }
+
+
+/* =========================================================
+   PAGE
+========================================================= */
 
 html,
 body{
+
     width:100%;
     height:100%;
-    overflow:hidden;
+
     position:fixed;
     inset:0;
+
+    overflow:hidden;
+
     background:#000;
+
     font-family:var(--font);
+
     overscroll-behavior:none;
+
 }
+
+
+/* =========================================================
+   PLAYER WRAPPER
+========================================================= */
 
 #player-wrapper{
+
     position:fixed;
+
     inset:0;
+
     width:100%;
     height:100%;
+
     overflow:hidden;
+
     background:#000;
+
     contain:layout paint size;
+
 }
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
 
 #player{
+
     position:absolute;
+
     inset:0;
+
     width:100%!important;
     height:100%!important;
+
     touch-action:manipulation;
+
+    contain:layout paint;
+
 }
 
-/*
-=========================================================
- IMPORTANT:
- Keep object-fit: fill exactly as requested.
-=========================================================
-*/
+
+/* =========================================================
+   VIDEO
+
+   IMPORTANT:
+   object-fit: fill is intentionally preserved.
+========================================================= */
 
 #player video,
 .jw-video.jw-reset{
+
     width:100%!important;
     height:100%!important;
+
     object-fit:fill!important;
+
     touch-action:manipulation;
-    -webkit-tap-highlight-color:transparent;
+
+    background:#000;
+
 }
 
-/* JW */
+
+/* =========================================================
+   JW PLAYER SKIN
+========================================================= */
 
 .jw-skin-glow .jw-display-icon-container{
-    background:rgba(167,139,250,.10)!important;
-    border:1px solid rgba(167,139,250,.4);
+
+    background:
+        rgba(167,139,250,.10)!important;
+
+    border:
+        1px solid
+        rgba(167,139,250,.4);
+
     backdrop-filter:none!important;
+
 }
+
 
 .jw-skin-glow .jw-button-color{
+
     color:#fff!important;
+
 }
+
 
 .jw-skin-glow .jw-controlbar{
-    background:linear-gradient(
-        0deg,
-        rgba(0,0,0,.78),
-        transparent
-    )!important;
+
+    background:
+        linear-gradient(
+            0deg,
+            rgba(0,0,0,.78),
+            transparent
+        )!important;
+
     backdrop-filter:none!important;
+
 }
+
 
 .jw-skin-glow .jw-slider-time .jw-progress{
-    background:var(--grad-b)!important;
+
+    background:
+        var(--grad-b)!important;
+
 }
+
 
 .jw-skin-glow .jw-knob{
-    background:var(--grad-b)!important;
+
+    background:
+        var(--grad-b)!important;
+
 }
 
-/* LOADER */
+
+/* =========================================================
+   LOADER
+========================================================= */
 
 #loader{
+
     position:absolute;
+
     inset:0;
 
     background:
@@ -127,48 +226,75 @@ body{
         );
 
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     flex-direction:column;
 
     z-index:99;
 
     opacity:1;
+
     visibility:visible;
+
+    pointer-events:none;
 
     transition:
         opacity .20s ease,
         visibility .20s ease;
 
-    pointer-events:none;
 }
+
 
 .hide-now{
+
     opacity:0!important;
+
     visibility:hidden!important;
+
 }
+
+
+/* =========================================================
+   LOADER TV
+========================================================= */
 
 .tuner{
+
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     gap:18px;
+
 }
 
+
 .tv-wrap{
+
     position:relative;
+
     width:72px;
     height:72px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
+
 }
 
+
 .tv-glow{
+
     position:absolute;
+
     width:100%;
     height:100%;
+
     border-radius:50%;
 
     background:
@@ -178,80 +304,146 @@ body{
             transparent 70%
         );
 
-    animation:glow-pulse 2.8s ease-in-out infinite;
+    animation:
+        glow-pulse 2.8s
+        ease-in-out infinite;
+
 }
+
 
 @keyframes glow-pulse{
+
     0%,100%{
+
         transform:scale(.9);
+
         opacity:.5;
+
     }
 
     50%{
+
         transform:scale(1.08);
+
         opacity:.9;
+
     }
+
 }
+
 
 .tv-icon{
+
     position:relative;
+
     width:56px;
     height:56px;
+
 }
+
 
 .tv-icon .tv-body{
+
     fill:none;
+
     stroke:var(--text);
+
     stroke-width:2;
+
     stroke-linecap:round;
+
     stroke-linejoin:round;
+
 }
+
 
 .tv-icon .screen-bars rect{
+
     transform-origin:center bottom;
-    animation:bar-flicker 1.8s ease-in-out infinite;
+
+    animation:
+        bar-flicker 1.8s
+        ease-in-out infinite;
+
 }
+
 
 .tv-icon .screen-bars rect:nth-child(1){
+
     fill:var(--grad-a);
+
     animation-delay:-1.2s;
+
 }
+
 
 .tv-icon .screen-bars rect:nth-child(2){
+
     fill:var(--grad-b);
+
     animation-delay:-.9s;
+
 }
+
 
 .tv-icon .screen-bars rect:nth-child(3){
+
     fill:var(--grad-c);
+
     animation-delay:-.6s;
+
 }
+
 
 .tv-icon .screen-bars rect:nth-child(4){
+
     fill:var(--grad-b);
+
     animation-delay:-.3s;
+
 }
+
 
 .tv-icon .screen-bars rect:nth-child(5){
+
     fill:var(--grad-a);
+
 }
 
+
 @keyframes bar-flicker{
+
     0%,100%{
+
         transform:scaleY(.5);
+
         opacity:.6;
+
     }
 
     50%{
+
         transform:scaleY(1);
+
         opacity:1;
+
     }
+
 }
 
+
+/* =========================================================
+   BRAND
+========================================================= */
+
 .brand-name{
+
     font-size:15px;
+
     font-weight:700;
+
     letter-spacing:1px;
+
     text-transform:uppercase;
 
     background:
@@ -262,104 +454,198 @@ body{
         );
 
     -webkit-background-clip:text;
+
     background-clip:text;
+
     color:transparent;
+
 }
+
 
 .brand-name b{
+
     color:var(--text);
+
     -webkit-text-fill-color:var(--text);
+
 }
+
+
+/* =========================================================
+   LOADING DOTS
+========================================================= */
 
 .dots{
+
     display:flex;
+
     gap:6px;
+
 }
+
 
 .dots span{
+
     width:6px;
+
     height:6px;
+
     border-radius:50%;
+
     background:var(--grad-b);
 
-    animation:dot-pulse 1.2s ease-in-out infinite;
+    animation:
+        dot-pulse 1.2s
+        ease-in-out infinite;
+
 }
+
 
 .dots span:nth-child(2){
+
     animation-delay:.2s;
+
 }
+
 
 .dots span:nth-child(3){
+
     animation-delay:.4s;
+
 }
 
+
 @keyframes dot-pulse{
+
     0%,80%,100%{
+
         transform:scale(.6);
+
         opacity:.35;
+
     }
 
     40%{
+
         transform:scale(1);
+
         opacity:1;
+
     }
+
 }
+
+
+/* =========================================================
+   STATUS
+========================================================= */
 
 .status-line{
+
     font-family:var(--mono);
+
     font-size:9.5px;
+
     letter-spacing:2.5px;
+
     color:var(--text-dim);
+
     text-transform:uppercase;
+
 }
 
-/* ERROR */
+
+/* =========================================================
+   ERROR STATE
+========================================================= */
 
 .state-content{
+
     text-align:center;
+
     color:var(--text);
+
     padding:0 24px;
+
 }
+
 
 .state-content .glyph{
+
     font-size:34px;
+
     color:var(--alert);
+
     margin-bottom:14px;
+
     line-height:1;
+
 }
+
 
 .state-content .glyph.warn{
+
     color:var(--warn);
+
 }
+
 
 .state-content p.title{
+
     font-size:13px;
+
     letter-spacing:1px;
+
     font-weight:600;
+
 }
+
 
 .state-content p.sub{
+
     font-family:var(--mono);
+
     font-size:10.5px;
+
     color:var(--text-dim);
+
     margin-top:8px;
+
     letter-spacing:.5px;
+
     max-width:280px;
+
     word-break:break-word;
+
 }
+
 
 .state-content .brand-name{
+
     display:block;
+
     margin-top:18px;
+
 }
 
+
+/* =========================================================
+   RETRY
+========================================================= */
+
 .retry-btn{
+
     margin-top:16px;
+
     padding:8px 20px;
 
     font-family:var(--font);
+
     font-weight:600;
+
     font-size:11px;
+
+    letter-spacing:.5px;
 
     color:#0a0a12;
 
@@ -371,39 +657,67 @@ body{
         );
 
     border:none;
+
     border-radius:18px;
 
     cursor:pointer;
+
     touch-action:manipulation;
+
 }
 
+
 .retry-btn:active{
+
     transform:scale(.96);
+
 }
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
 
 @media(prefers-reduced-motion:reduce){
 
     *,
     *::before,
     *::after{
+
         animation-duration:.01ms!important;
+
         animation-iteration-count:1!important;
+
         transition-duration:.01ms!important;
+
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div id="player-wrapper">
+
+
+    <!-- =====================================================
+         LOADER
+    ====================================================== -->
 
     <div id="loader">
 
         <div class="tuner">
 
+
             <div class="tv-wrap">
+
                 <div class="tv-glow"></div>
+
 
                 <svg
                     class="tv-icon"
@@ -411,12 +725,15 @@ body{
                     xmlns="http://www.w3.org/2000/svg"
                 >
 
+
                     <path
                         class="tv-body"
                         d="M22 12 32 20 42 12"
                     />
 
+
                     <clipPath id="screenClip">
+
                         <rect
                             x="12"
                             y="20"
@@ -424,20 +741,52 @@ body{
                             height="26"
                             rx="4"
                         />
+
                     </clipPath>
+
 
                     <g
                         class="screen-bars"
                         clip-path="url(#screenClip)"
                     >
 
-                        <rect x="12" y="20" width="8" height="26"/>
-                        <rect x="20" y="20" width="8" height="26"/>
-                        <rect x="28" y="20" width="8" height="26"/>
-                        <rect x="36" y="20" width="8" height="26"/>
-                        <rect x="44" y="20" width="8" height="26"/>
+                        <rect
+                            x="12"
+                            y="20"
+                            width="8"
+                            height="26"
+                        />
+
+                        <rect
+                            x="20"
+                            y="20"
+                            width="8"
+                            height="26"
+                        />
+
+                        <rect
+                            x="28"
+                            y="20"
+                            width="8"
+                            height="26"
+                        />
+
+                        <rect
+                            x="36"
+                            y="20"
+                            width="8"
+                            height="26"
+                        />
+
+                        <rect
+                            x="44"
+                            y="20"
+                            width="8"
+                            height="26"
+                        />
 
                     </g>
+
 
                     <rect
                         class="tv-body"
@@ -448,6 +797,7 @@ body{
                         rx="4"
                     />
 
+
                     <line
                         class="tv-body"
                         x1="24"
@@ -455,6 +805,7 @@ body{
                         x2="24"
                         y2="50"
                     />
+
 
                     <line
                         class="tv-body"
@@ -464,6 +815,7 @@ body{
                         y2="50"
                     />
 
+
                     <line
                         class="tv-body"
                         x1="20"
@@ -472,41 +824,62 @@ body{
                         y2="50"
                     />
 
+
                 </svg>
+
             </div>
+
 
             <div class="brand-name">
+
                 <b>RS LIVE</b> TV
+
             </div>
 
+
             <div class="dots">
+
                 <span></span>
                 <span></span>
                 <span></span>
+
             </div>
+
 
             <div
                 class="status-line"
                 id="status-line"
             >
+
                 CONNECTING
+
             </div>
+
 
         </div>
 
     </div>
 
+
+    <!-- =====================================================
+         PLAYER
+    ====================================================== -->
+
     <div id="player"></div>
+
 
 </div>
 
+
 <script>
+
 (() => {
 
 "use strict";
 
+
 /* =========================================================
-   URL
+   URL PARAMETERS
 ========================================================= */
 
 const params =
@@ -514,15 +887,19 @@ const params =
         window.location.search
     );
 
+
 const streamSource =
     params.get("url");
+
 
 const forcedType =
     (params.get("type") || "")
     .toLowerCase();
 
+
 const startMuted =
     params.get("mute") === "1";
+
 
 /* =========================================================
    DOM
@@ -531,8 +908,14 @@ const startMuted =
 const loaderEl =
     document.getElementById("loader");
 
+
 const statusEl =
     document.getElementById("status-line");
+
+
+const playerContainer =
+    document.getElementById("player");
+
 
 /* =========================================================
    CONFIG
@@ -540,30 +923,48 @@ const statusEl =
 
 const CONFIG = {
 
+    /*
+     * Maximum time allowed for initial connection.
+     */
+
     initialTimeout:12000,
+
+
+    /*
+     * Maximum reconnect attempts.
+     */
 
     maxRetries:6,
 
+
     /*
-     * Buffer must remain for 1000ms
-     * before loader is shown.
+     * Buffer has to continue for this long
+     * before loader appears.
      */
+
     bufferDelay:1000,
 
-    /*
-     * Fullscreen transition protection.
-     */
-    fullscreenGrace:1200,
 
     /*
-     * Reconnect starts quickly but does not
-     * hammer the server.
+     * Fullscreen resize protection.
      */
+
+    fullscreenGrace:1200,
+
+
+    /*
+     * Reconnect delay.
+
+     * IMPORTANT:
+     * This is only used after real playback errors.
+     */
+
     reconnectBase:900,
 
     reconnectMax:5000
 
 };
+
 
 /* =========================================================
    STATE
@@ -589,6 +990,15 @@ let fullscreenTransition = false;
 
 let pageDestroyed = false;
 
+
+/*
+ * This flag is true only when the user
+ * intentionally presses a JW control.
+ */
+
+let controlInteraction = false;
+
+
 /* =========================================================
    LOADER
 ========================================================= */
@@ -596,20 +1006,26 @@ let pageDestroyed = false;
 function showLoader(){
 
     if(pageDestroyed){
+
         return;
+
     }
 
     loaderEl.classList.remove(
         "hide-now"
     );
+
 }
+
 
 function hideLoader(){
 
     loaderEl.classList.add(
         "hide-now"
     );
+
 }
+
 
 /* =========================================================
    STATUS
@@ -618,49 +1034,67 @@ function hideLoader(){
 function startStatus(){
 
     const messages = [
+
         "CONNECTING",
         "LOADING",
         "BUFFERING"
+
     ];
 
+
     let index = 0;
+
 
     statusTimer =
         setInterval(() => {
 
+
             if(hasPlayed){
+
                 return;
+
             }
+
 
             index =
                 (index + 1) %
                 messages.length;
 
+
             statusEl.textContent =
                 messages[index];
 
+
         },2200);
+
 }
+
 
 function stopStatus(){
 
     if(statusTimer){
 
         clearInterval(statusTimer);
+
         statusTimer = null;
 
     }
+
 }
 
+
 /* =========================================================
-   TYPE
+   STREAM TYPE DETECTION
 ========================================================= */
 
 function detectType(raw){
 
     if(forcedType){
+
         return forcedType;
+
     }
+
 
     const clean =
         raw
@@ -668,45 +1102,74 @@ function detectType(raw){
         .split("#")[0]
         .toLowerCase();
 
+
     if(clean.endsWith(".m3u8")){
+
         return "hls";
+
     }
 
+
     if(clean.endsWith(".mpd")){
+
         return "dash";
+
     }
+
 
     if(
         clean.endsWith(".mp4") ||
         clean.endsWith(".mov")
     ){
+
         return "mp4";
+
     }
 
+
     if(clean.endsWith(".webm")){
+
         return "webm";
+
     }
+
 
     if(
         clean.endsWith(".ogg") ||
         clean.endsWith(".ogv")
     ){
+
         return "ogg";
+
     }
+
+
+    /*
+     * Tokenized stream URL.
+     */
 
     const lower =
         raw.toLowerCase();
 
+
     if(lower.includes(".m3u8")){
+
         return "hls";
+
     }
+
 
     if(lower.includes(".mpd")){
+
         return "dash";
+
     }
 
+
     return null;
+
 }
+
 
 /* =========================================================
    BRAND
@@ -715,29 +1178,38 @@ function detectType(raw){
 function brandBlock(){
 
     return `
+
         <div class="brand-name">
+
             <b>RS LIVE</b> TV
+
         </div>
+
     `;
 
 }
 
+
 /* =========================================================
-   ERROR
+   ERROR STATE
 ========================================================= */
 
 function showNoStreamState(error){
 
     clearTimeout(retryTimer);
+
     clearTimeout(initialTimer);
+
     clearTimeout(bufferTimer);
 
     stopStatus();
 
     showLoader();
 
+
     let message =
         "The source could not be reached.";
+
 
     if(
         error &&
@@ -745,46 +1217,59 @@ function showNoStreamState(error){
     ){
 
         message =
-            String(error.message);
+            String(error.message)
+            .replace(/</g,"&lt;")
+            .replace(/>/g,"&gt;")
+            .slice(0,220);
 
     }
 
-    message =
-        message
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .slice(0,220);
 
     loaderEl.innerHTML = `
 
         <div class="state-content">
 
+
             <div class="glyph">
+
                 &#10060;
+
             </div>
 
+
             <p class="title">
+
                 No streaming — this link won't play
+
             </p>
 
+
             <p class="sub">
+
                 ${message}
+
             </p>
+
 
             <button
                 class="retry-btn"
                 onclick="location.reload()"
             >
+
                 Retry
+
             </button>
 
+
             ${brandBlock()}
+
 
         </div>
 
     `;
 
 }
+
 
 /* =========================================================
    NO URL
@@ -794,42 +1279,61 @@ if(!streamSource){
 
     showLoader();
 
+
     loaderEl.innerHTML = `
 
         <div class="state-content">
 
+
             <div class="glyph warn">
+
                 &#9888;
+
             </div>
 
+
             <p class="title">
+
                 No stream URL supplied
+
             </p>
+
 
             <p class="sub">
+
                 Add ?url=YOUR_STREAM_LINK
                 to this page's address.
+
             </p>
 
+
             ${brandBlock()}
+
 
         </div>
 
     `;
 
+
     return;
+
 }
 
+
 /* =========================================================
-   SOURCE
+   PLAYLIST
 ========================================================= */
 
 const streamType =
     detectType(streamSource);
 
+
 const playlistItem = {
+
     file:streamSource
+
 };
+
 
 if(streamType){
 
@@ -838,8 +1342,9 @@ if(streamType){
 
 }
 
+
 /* =========================================================
-   PLAYER
+   JW PLAYER SETUP
 ========================================================= */
 
 player =
@@ -849,20 +1354,29 @@ player =
             playlistItem
         ],
 
+
         width:"100%",
+
         height:"100%",
+
 
         autostart:true,
 
+
         mute:startMuted,
+
 
         preload:"auto",
 
+
         stretching:"uniform",
+
 
         liveTimeout:0,
 
+
         displaytitle:false,
+
 
         skin:{
             name:"glow"
@@ -870,19 +1384,16 @@ player =
 
     });
 
+
 /* =========================================================
-   INITIAL TIMER
+   INITIAL TIMEOUT
 ========================================================= */
 
 initialTimer =
     setTimeout(() => {
 
-        if(!hasPlayed){
 
-            /*
-             * Only initial connection timeout.
-             * This does NOT reload on touch/fullscreen.
-             */
+        if(!hasPlayed){
 
             reconnect(
                 true,
@@ -891,7 +1402,9 @@ initialTimer =
 
         }
 
+
     },CONFIG.initialTimeout);
+
 
 /* =========================================================
    READY
@@ -899,12 +1412,18 @@ initialTimer =
 
 player.on("ready",() => {
 
+
     console.log(
         "RS Player ready:",
         streamType || "auto"
     );
 
+
+    setupTouchProtection();
+
+
 });
+
 
 /* =========================================================
    FIRST FRAME
@@ -912,20 +1431,27 @@ player.on("ready",() => {
 
 player.on("firstFrame",() => {
 
+
     hasPlayed = true;
 
     retryCount = 0;
 
     reconnecting = false;
 
+
     clearTimeout(initialTimer);
+
     clearTimeout(bufferTimer);
+
 
     stopStatus();
 
+
     hideLoader();
 
+
 });
+
 
 /* =========================================================
    PLAY
@@ -933,20 +1459,112 @@ player.on("firstFrame",() => {
 
 player.on("play",() => {
 
+
     hasPlayed = true;
 
     retryCount = 0;
 
     reconnecting = false;
 
+
     clearTimeout(initialTimer);
+
     clearTimeout(bufferTimer);
+
 
     stopStatus();
 
+
     hideLoader();
 
+
 });
+
+
+/* =========================================================
+   PAUSE PROTECTION
+========================================================= */
+
+player.on("pause",() => {
+
+
+    /*
+     * If the user intentionally pressed
+     * JW control bar Play/Pause button,
+     * allow the pause.
+     */
+
+    if(controlInteraction){
+
+        controlInteraction = false;
+
+        return;
+
+    }
+
+
+    /*
+     * Otherwise the pause likely came from
+     * touching the video/display area.
+     *
+     * Restore playback immediately.
+     */
+
+    if(
+        hasPlayed &&
+        !pageDestroyed
+    ){
+
+        setTimeout(() => {
+
+
+            if(
+                !player ||
+                pageDestroyed
+            ){
+
+                return;
+
+            }
+
+
+            try{
+
+
+                if(
+                    player.getState &&
+                    player.getState() === "paused"
+                ){
+
+
+                    const playPromise =
+                        player.play(true);
+
+
+                    if(
+                        playPromise &&
+                        typeof playPromise.catch ===
+                        "function"
+                    ){
+
+                        playPromise.catch(
+                            () => {}
+                        );
+
+                    }
+
+                }
+
+
+            }catch(e){}
+
+
+        },50);
+
+    }
+
+});
+
 
 /* =========================================================
    BUFFER
@@ -954,11 +1572,10 @@ player.on("play",() => {
 
 player.on("buffer",() => {
 
+
     /*
-     * Critical fix:
-     *
-     * Fullscreen / touch related buffer events
-     * must NOT cover the video with loader.
+     * Never display loader while
+     * fullscreen is resizing.
      */
 
     if(fullscreenTransition){
@@ -967,19 +1584,18 @@ player.on("buffer",() => {
 
     }
 
+
     clearTimeout(bufferTimer);
+
 
     bufferTimer =
         setTimeout(() => {
 
-            /*
-             * Re-check fullscreen state.
-             */
 
             if(
                 !fullscreenTransition &&
-                !pageDestroyed &&
-                hasPlayed
+                hasPlayed &&
+                !pageDestroyed
             ){
 
                 showLoader();
@@ -989,37 +1605,41 @@ player.on("buffer",() => {
 
             }
 
+
         },CONFIG.bufferDelay);
 
+
 });
+
 
 /* =========================================================
    FULLSCREEN
 ========================================================= */
 
-player.on("fullscreen",(event) => {
+player.on("fullscreen",() => {
+
 
     /*
      * IMPORTANT:
      *
-     * Do NOT call:
+     * DO NOT:
+     *
      * player.load()
-     * player.play()
      * player.stop()
+     * player.play()
      *
      * here.
      */
 
+
     fullscreenTransition = true;
+
 
     clearTimeout(bufferTimer);
 
-    /*
-     * Never hide/restart/reload video.
-     * Just keep current playback alive.
-     */
 
     hideLoader();
+
 
     setTimeout(() => {
 
@@ -1027,99 +1647,239 @@ player.on("fullscreen",(event) => {
 
     },CONFIG.fullscreenGrace);
 
+
 });
+
 
 /* =========================================================
    TOUCH PROTECTION
 ========================================================= */
 
-/*
- * Do NOT prevent normal touch on JW controls.
- *
- * Preventing touch propagation here can interfere
- * with JW Player's own control system.
- *
- * We only prevent double-tap browser zoom.
- */
+function setupTouchProtection(){
 
-let lastTouchTime = 0;
 
-document.addEventListener(
-    "touchend",
-    (event) => {
+    if(!playerContainer){
 
-        const now =
-            Date.now();
+        return;
 
-        const target =
-            event.target;
+    }
 
-        if(
-            target &&
-            (
-                target.closest("#player")
-            )
-        ){
+
+    /*
+     * VIDEO TOUCH START
+     *
+     * We don't prevent default.
+     * This keeps JW controls working.
+     */
+
+    playerContainer.addEventListener(
+
+        "touchstart",
+
+        (event) => {
+
+
+            const target =
+                event.target;
+
+
+            /*
+             * JW control bar:
+             * let it work normally.
+             */
 
             if(
-                now - lastTouchTime <
-                280
+                target &&
+                target.closest(
+                    ".jw-controlbar"
+                )
+            ){
+
+                return;
+
+            }
+
+
+            /*
+             * Video area:
+             *
+             * Do nothing.
+             *
+             * No play()
+             * No pause()
+             * No load()
+             */
+
+        },
+
+        {
+            passive:true,
+            capture:true
+        }
+
+    );
+
+
+    /*
+     * VIDEO TOUCH END
+     */
+
+    playerContainer.addEventListener(
+
+        "touchend",
+
+        (event) => {
+
+
+            const target =
+                event.target;
+
+
+            /*
+             * Control bar gets normal
+             * JW behavior.
+             */
+
+            if(
+                target &&
+                target.closest(
+                    ".jw-controlbar"
+                )
+            ){
+
+                return;
+
+            }
+
+
+            /*
+             * Screen touch:
+             *
+             * Nothing happens.
+             *
+             * Stream keeps playing.
+             */
+
+        },
+
+        {
+            passive:true,
+            capture:true
+        }
+
+    );
+
+
+    /*
+     * Prevent browser double-tap zoom
+     * on video only.
+     */
+
+    playerContainer.addEventListener(
+
+        "dblclick",
+
+        (event) => {
+
+
+            const target =
+                event.target;
+
+
+            if(
+                target &&
+                target.closest(
+                    ".jw-video"
+                )
             ){
 
                 event.preventDefault();
 
             }
 
-            lastTouchTime = now;
 
+        },
+
+        {
+            passive:false,
+            capture:true
         }
 
-    },
-    {
-        passive:false
-    }
-);
+    );
+
+}
+
 
 /* =========================================================
-   DOUBLE CLICK
+   CONTROL BAR DETECTION
 ========================================================= */
 
 document.addEventListener(
-    "dblclick",
+
+    "pointerdown",
+
     (event) => {
+
 
         const target =
             event.target;
 
-        if(
-            target &&
-            target.closest("#player")
-        ){
 
-            event.preventDefault();
+        if(!target){
+
+            return;
 
         }
 
+
+        /*
+         * Detect JW control button.
+         *
+         * This is the only situation where
+         * pause is intentionally allowed.
+         */
+
+        const button =
+            target.closest(
+                ".jw-controlbar .jw-button-container"
+            );
+
+
+        if(button){
+
+            controlInteraction = true;
+
+        }
+
+
     },
+
     {
-        passive:false
+        passive:true,
+        capture:true
     }
+
 );
 
+
 /* =========================================================
-   REAL ERROR ONLY
+   REAL PLAYBACK ERROR
 ========================================================= */
 
 player.on("error",(error) => {
+
 
     console.warn(
         "Playback error:",
         error
     );
 
+
     /*
-     * A real JW error is required before reconnect.
-     * Touch/fullscreen never reaches this function.
+     * Touch/fullscreen never calls this.
+     *
+     * Only real JW playback errors
+     * trigger reconnect.
      */
 
     reconnect(
@@ -1127,21 +1887,31 @@ player.on("error",(error) => {
         error
     );
 
+
 });
 
+
+/* =========================================================
+   SETUP ERROR
+========================================================= */
+
 player.on("setupError",(error) => {
+
 
     console.warn(
         "Setup error:",
         error
     );
 
+
     reconnect(
         false,
         error
     );
 
+
 });
+
 
 /* =========================================================
    RECONNECT
@@ -1152,91 +1922,131 @@ function reconnect(
     error
 ){
 
+
     if(pageDestroyed){
+
         return;
+
     }
 
+
     /*
-     * Don't reconnect while fullscreen is transitioning.
+     * Never reload source while
+     * fullscreen is transitioning.
      */
 
     if(fullscreenTransition){
 
+
         setTimeout(() => {
+
 
             reconnect(
                 initial,
                 error
             );
 
+
         },1000);
 
+
         return;
+
     }
 
+
     /*
-     * Prevent duplicate reconnect.
+     * Prevent duplicate reconnects.
      */
 
     if(reconnecting){
+
         return;
+
     }
+
+
+    /*
+     * Maximum attempts.
+     */
 
     if(
         retryCount >=
         CONFIG.maxRetries
     ){
 
-        showNoStreamState(error);
+
+        showNoStreamState(
+            error
+        );
+
 
         return;
+
     }
+
 
     reconnecting = true;
 
     retryCount++;
 
+
     const delay =
         Math.min(
+
             CONFIG.reconnectBase *
             Math.pow(
                 1.45,
                 retryCount - 1
             ),
+
             CONFIG.reconnectMax
+
         );
+
 
     statusEl.textContent =
         `RECONNECTING (${retryCount}/${CONFIG.maxRetries})`;
 
+
     showLoader();
 
+
     clearTimeout(retryTimer);
+
 
     retryTimer =
         setTimeout(() => {
 
+
             if(pageDestroyed){
+
                 return;
+
             }
 
-            /*
-             * IMPORTANT:
-             *
-             * load() is ONLY executed here
-             * after a real error/reconnect condition.
-             *
-             * Normal screen touch cannot trigger this.
-             */
 
             try{
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * load() is used ONLY
+                 * after a genuine error.
+                 *
+                 * Normal screen touch
+                 * never reaches here.
+                 */
 
                 player.load([
                     playlistItem
                 ]);
 
+
                 const playPromise =
                     player.play(true);
+
 
                 if(
                     playPromise &&
@@ -1250,48 +2060,74 @@ function reconnect(
 
                 }
 
+
             }catch(e){
+
 
                 console.warn(
                     "Reconnect failed:",
                     e
                 );
 
+
             }
 
+
             reconnecting = false;
+
 
         },delay);
 
 }
+
 
 /* =========================================================
    PAGE CLEANUP
 ========================================================= */
 
 window.addEventListener(
+
     "pagehide",
+
     () => {
+
 
         pageDestroyed = true;
 
-        clearTimeout(retryTimer);
-        clearTimeout(initialTimer);
-        clearTimeout(bufferTimer);
+
+        clearTimeout(
+            retryTimer
+        );
+
+
+        clearTimeout(
+            initialTimer
+        );
+
+
+        clearTimeout(
+            bufferTimer
+        );
+
 
         stopStatus();
 
+
     },
+
     {
         passive:true
     }
+
 );
 
+
 /* =========================================================
-   START
+   START STATUS
 ========================================================= */
 
 startStatus();
+
 
 })();
 </script>
