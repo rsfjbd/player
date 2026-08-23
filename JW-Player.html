@@ -4,14 +4,15 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1,
-               user-scalable=no, viewport-fit=cover">
+      content="width=device-width, initial-scale=1,
+               maximum-scale=1, user-scalable=no,
+               viewport-fit=cover">
 
 <title>RS Player Pro</title>
 
 <script src="https://content.jwplatform.com/libraries/IDzF9Zmk.js"></script>
 <script>
-    jwplayer.key = "Khpp2dHxlBJHC8MCmLnBuV2jK/DwDnJMniwF6EO9HC/riJ712ZmbHg==";
+jwplayer.key = "Khpp2dHxlBJHC8MCmLnBuV2jK/DwDnJMniwF6EO9HC/riJ712ZmbHg==";
 </script>
 
 <link rel="preconnect" href="https://content.jwplatform.com">
@@ -41,11 +42,11 @@ html,
 body{
     width:100%;
     height:100%;
-    background:#000;
     overflow:hidden;
-    font-family:var(--font);
     position:fixed;
     inset:0;
+    background:#000;
+    font-family:var(--font);
     overscroll-behavior:none;
 }
 
@@ -65,17 +66,25 @@ body{
     width:100%!important;
     height:100%!important;
     touch-action:manipulation;
-    contain:layout paint;
 }
 
-#player video{
+/*
+=========================================================
+ IMPORTANT:
+ Keep object-fit: fill exactly as requested.
+=========================================================
+*/
+
+#player video,
+.jw-video.jw-reset{
     width:100%!important;
     height:100%!important;
+    object-fit:fill!important;
     touch-action:manipulation;
     -webkit-tap-highlight-color:transparent;
 }
 
-/* JW PLAYER */
+/* JW */
 
 .jw-skin-glow .jw-display-icon-container{
     background:rgba(167,139,250,.10)!important;
@@ -104,19 +113,12 @@ body{
     background:var(--grad-b)!important;
 }
 
-/*
- * GPU friendly video rendering.
- * Do NOT use expensive filters here.
- */
-.jw-video.jw-reset{
-    object-fit:contain!important;
-}
-
 /* LOADER */
 
 #loader{
     position:absolute;
     inset:0;
+
     background:
         radial-gradient(
             80% 60% at 50% 40%,
@@ -125,8 +127,8 @@ body{
         );
 
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     flex-direction:column;
 
     z-index:99;
@@ -135,8 +137,8 @@ body{
     visibility:visible;
 
     transition:
-        opacity .25s ease,
-        visibility .25s ease;
+        opacity .20s ease,
+        visibility .20s ease;
 
     pointer-events:none;
 }
@@ -157,6 +159,7 @@ body{
     position:relative;
     width:72px;
     height:72px;
+
     display:flex;
     align-items:center;
     justify-content:center;
@@ -167,6 +170,7 @@ body{
     width:100%;
     height:100%;
     border-radius:50%;
+
     background:
         radial-gradient(
             circle,
@@ -182,6 +186,7 @@ body{
         transform:scale(.9);
         opacity:.5;
     }
+
     50%{
         transform:scale(1.08);
         opacity:.9;
@@ -236,6 +241,7 @@ body{
         transform:scaleY(.5);
         opacity:.6;
     }
+
     50%{
         transform:scaleY(1);
         opacity:1;
@@ -312,7 +318,6 @@ body{
 .state-content{
     text-align:center;
     color:var(--text);
-    z-index:100;
     padding:0 24px;
 }
 
@@ -355,7 +360,6 @@ body{
     font-family:var(--font);
     font-weight:600;
     font-size:11px;
-    letter-spacing:.5px;
 
     color:#0a0a12;
 
@@ -377,9 +381,8 @@ body{
     transform:scale(.96);
 }
 
-/* Reduce animations for devices that request it */
-
 @media(prefers-reduced-motion:reduce){
+
     *,
     *::before,
     *::after{
@@ -400,7 +403,6 @@ body{
         <div class="tuner">
 
             <div class="tv-wrap">
-
                 <div class="tv-glow"></div>
 
                 <svg
@@ -429,40 +431,11 @@ body{
                         clip-path="url(#screenClip)"
                     >
 
-                        <rect
-                            x="12"
-                            y="20"
-                            width="8"
-                            height="26"
-                        />
-
-                        <rect
-                            x="20"
-                            y="20"
-                            width="8"
-                            height="26"
-                        />
-
-                        <rect
-                            x="28"
-                            y="20"
-                            width="8"
-                            height="26"
-                        />
-
-                        <rect
-                            x="36"
-                            y="20"
-                            width="8"
-                            height="26"
-                        />
-
-                        <rect
-                            x="44"
-                            y="20"
-                            width="8"
-                            height="26"
-                        />
+                        <rect x="12" y="20" width="8" height="26"/>
+                        <rect x="20" y="20" width="8" height="26"/>
+                        <rect x="28" y="20" width="8" height="26"/>
+                        <rect x="36" y="20" width="8" height="26"/>
+                        <rect x="44" y="20" width="8" height="26"/>
 
                     </g>
 
@@ -500,7 +473,6 @@ body{
                     />
 
                 </svg>
-
             </div>
 
             <div class="brand-name">
@@ -537,11 +509,17 @@ body{
    URL
 ========================================================= */
 
-const params = new URLSearchParams(location.search);
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
-const streamSource = params.get("url");
+const streamSource =
+    params.get("url");
+
 const forcedType =
-    (params.get("type") || "").toLowerCase();
+    (params.get("type") || "")
+    .toLowerCase();
 
 const startMuted =
     params.get("mute") === "1";
@@ -562,23 +540,28 @@ const statusEl =
 
 const CONFIG = {
 
-    /* Initial connection timeout */
-    initialTimeout: 12000,
+    initialTimeout:12000,
 
-    /* Maximum reconnect attempts */
-    maxRetries: 6,
+    maxRetries:6,
 
-    /* Buffer must last this long before loader appears */
-    bufferDelay: 900,
+    /*
+     * Buffer must remain for 1000ms
+     * before loader is shown.
+     */
+    bufferDelay:1000,
 
-    /* Fullscreen grace period */
-    fullscreenGrace: 1000,
+    /*
+     * Fullscreen transition protection.
+     */
+    fullscreenGrace:1200,
 
-    /* Reconnect delay */
-    reconnectBase: 900,
+    /*
+     * Reconnect starts quickly but does not
+     * hammer the server.
+     */
+    reconnectBase:900,
 
-    /* Maximum reconnect delay */
-    reconnectMax: 5000
+    reconnectMax:5000
 
 };
 
@@ -600,11 +583,11 @@ let statusTimer = null;
 
 let hasPlayed = false;
 
-let destroyed = false;
-
 let reconnecting = false;
 
 let fullscreenTransition = false;
+
+let pageDestroyed = false;
 
 /* =========================================================
    LOADER
@@ -612,14 +595,20 @@ let fullscreenTransition = false;
 
 function showLoader(){
 
-    if(destroyed) return;
+    if(pageDestroyed){
+        return;
+    }
 
-    loaderEl.classList.remove("hide-now");
+    loaderEl.classList.remove(
+        "hide-now"
+    );
 }
 
 function hideLoader(){
 
-    loaderEl.classList.add("hide-now");
+    loaderEl.classList.add(
+        "hide-now"
+    );
 }
 
 /* =========================================================
@@ -630,24 +619,27 @@ function startStatus(){
 
     const messages = [
         "CONNECTING",
-        "BUFFERING",
-        "LOADING"
+        "LOADING",
+        "BUFFERING"
     ];
 
     let index = 0;
 
-    statusTimer = setInterval(() => {
+    statusTimer =
+        setInterval(() => {
 
-        if(hasPlayed) return;
+            if(hasPlayed){
+                return;
+            }
 
-        index =
-            (index + 1) %
-            messages.length;
+            index =
+                (index + 1) %
+                messages.length;
 
-        statusEl.textContent =
-            messages[index];
+            statusEl.textContent =
+                messages[index];
 
-    }, 2200);
+        },2200);
 }
 
 function stopStatus(){
@@ -661,7 +653,7 @@ function stopStatus(){
 }
 
 /* =========================================================
-   TYPE DETECTION
+   TYPE
 ========================================================= */
 
 function detectType(raw){
@@ -702,9 +694,8 @@ function detectType(raw){
         return "ogg";
     }
 
-    /* Tokenized URLs */
-
-    const lower = raw.toLowerCase();
+    const lower =
+        raw.toLowerCase();
 
     if(lower.includes(".m3u8")){
         return "hls";
@@ -732,12 +723,10 @@ function brandBlock(){
 }
 
 /* =========================================================
-   ERROR STATE
+   ERROR
 ========================================================= */
 
-function showNoStreamState(err){
-
-    if(destroyed) return;
+function showNoStreamState(error){
 
     clearTimeout(retryTimer);
     clearTimeout(initialTimer);
@@ -750,17 +739,18 @@ function showNoStreamState(err){
     let message =
         "The source could not be reached.";
 
-    if(err && err.message){
-        message = err.message;
+    if(
+        error &&
+        error.message
+    ){
+
+        message =
+            String(error.message);
+
     }
 
-    /*
-     * Prevent extremely long JW error messages
-     * from destroying the UI.
-     */
-
     message =
-        String(message)
+        message
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
         .slice(0,220);
@@ -831,7 +821,7 @@ if(!streamSource){
 }
 
 /* =========================================================
-   STREAM
+   SOURCE
 ========================================================= */
 
 const streamType =
@@ -849,56 +839,59 @@ if(streamType){
 }
 
 /* =========================================================
-   PLAYER SETUP
+   PLAYER
 ========================================================= */
 
-player = jwplayer("player").setup({
+player =
+    jwplayer("player").setup({
 
-    playlist:[
-        playlistItem
-    ],
+        playlist:[
+            playlistItem
+        ],
 
-    width:"100%",
-    height:"100%",
+        width:"100%",
+        height:"100%",
 
-    autostart:true,
+        autostart:true,
 
-    mute:startMuted,
+        mute:startMuted,
 
-    preload:"auto",
+        preload:"auto",
 
-    /*
-     * Uniform prevents distortion and reduces
-     * unnecessary resize calculations.
-     */
-    stretching:"uniform",
+        stretching:"uniform",
 
-    liveTimeout:0,
+        liveTimeout:0,
 
-    displaytitle:false,
+        displaytitle:false,
 
-    skin:{
-        name:"glow"
-    }
+        skin:{
+            name:"glow"
+        }
 
-});
+    });
 
 /* =========================================================
-   INITIAL CONNECTION TIMER
+   INITIAL TIMER
 ========================================================= */
 
-initialTimer = setTimeout(() => {
+initialTimer =
+    setTimeout(() => {
 
-    if(!hasPlayed){
+        if(!hasPlayed){
 
-        /*
-         * Give reconnect logic a chance first.
-         */
-        reconnect(true);
+            /*
+             * Only initial connection timeout.
+             * This does NOT reload on touch/fullscreen.
+             */
 
-    }
+            reconnect(
+                true,
+                null
+            );
 
-}, CONFIG.initialTimeout);
+        }
+
+    },CONFIG.initialTimeout);
 
 /* =========================================================
    READY
@@ -921,9 +914,9 @@ player.on("firstFrame",() => {
 
     hasPlayed = true;
 
-    reconnecting = false;
-
     retryCount = 0;
+
+    reconnecting = false;
 
     clearTimeout(initialTimer);
     clearTimeout(bufferTimer);
@@ -942,9 +935,9 @@ player.on("play",() => {
 
     hasPlayed = true;
 
-    reconnecting = false;
-
     retryCount = 0;
+
+    reconnecting = false;
 
     clearTimeout(initialTimer);
     clearTimeout(bufferTimer);
@@ -962,42 +955,41 @@ player.on("play",() => {
 player.on("buffer",() => {
 
     /*
-     * Never show loader during fullscreen resize.
+     * Critical fix:
+     *
+     * Fullscreen / touch related buffer events
+     * must NOT cover the video with loader.
      */
+
     if(fullscreenTransition){
+
         return;
+
     }
 
-    /*
-     * Don't show loader for tiny buffer events.
-     */
     clearTimeout(bufferTimer);
 
-    bufferTimer = setTimeout(() => {
+    bufferTimer =
+        setTimeout(() => {
 
-        if(
-            !fullscreenTransition &&
-            !destroyed
-        ){
+            /*
+             * Re-check fullscreen state.
+             */
 
-            showLoader();
+            if(
+                !fullscreenTransition &&
+                !pageDestroyed &&
+                hasPlayed
+            ){
 
-            statusEl.textContent =
-                "BUFFERING";
+                showLoader();
 
-        }
+                statusEl.textContent =
+                    "BUFFERING";
 
-    },CONFIG.bufferDelay);
+            }
 
-});
-
-/* =========================================================
-   BUFFER COMPLETE
-========================================================= */
-
-player.on("play",() => {
-
-    clearTimeout(bufferTimer);
+        },CONFIG.bufferDelay);
 
 });
 
@@ -1005,16 +997,26 @@ player.on("play",() => {
    FULLSCREEN
 ========================================================= */
 
-player.on("fullscreen",() => {
+player.on("fullscreen",(event) => {
+
+    /*
+     * IMPORTANT:
+     *
+     * Do NOT call:
+     * player.load()
+     * player.play()
+     * player.stop()
+     *
+     * here.
+     */
 
     fullscreenTransition = true;
 
     clearTimeout(bufferTimer);
 
     /*
-     * Important:
-     * Don't put a loader over the video
-     * during fullscreen transition.
+     * Never hide/restart/reload video.
+     * Just keep current playback alive.
      */
 
     hideLoader();
@@ -1028,32 +1030,116 @@ player.on("fullscreen",() => {
 });
 
 /* =========================================================
-   ERROR
+   TOUCH PROTECTION
+========================================================= */
+
+/*
+ * Do NOT prevent normal touch on JW controls.
+ *
+ * Preventing touch propagation here can interfere
+ * with JW Player's own control system.
+ *
+ * We only prevent double-tap browser zoom.
+ */
+
+let lastTouchTime = 0;
+
+document.addEventListener(
+    "touchend",
+    (event) => {
+
+        const now =
+            Date.now();
+
+        const target =
+            event.target;
+
+        if(
+            target &&
+            (
+                target.closest("#player")
+            )
+        ){
+
+            if(
+                now - lastTouchTime <
+                280
+            ){
+
+                event.preventDefault();
+
+            }
+
+            lastTouchTime = now;
+
+        }
+
+    },
+    {
+        passive:false
+    }
+);
+
+/* =========================================================
+   DOUBLE CLICK
+========================================================= */
+
+document.addEventListener(
+    "dblclick",
+    (event) => {
+
+        const target =
+            event.target;
+
+        if(
+            target &&
+            target.closest("#player")
+        ){
+
+            event.preventDefault();
+
+        }
+
+    },
+    {
+        passive:false
+    }
+);
+
+/* =========================================================
+   REAL ERROR ONLY
 ========================================================= */
 
 player.on("error",(error) => {
 
     console.warn(
-        "JW Player error:",
+        "Playback error:",
         error
     );
 
-    reconnect(false,error);
+    /*
+     * A real JW error is required before reconnect.
+     * Touch/fullscreen never reaches this function.
+     */
+
+    reconnect(
+        false,
+        error
+    );
 
 });
-
-/* =========================================================
-   SETUP ERROR
-========================================================= */
 
 player.on("setupError",(error) => {
 
     console.warn(
-        "JW setup error:",
+        "Setup error:",
         error
     );
 
-    reconnect(false,error);
+    reconnect(
+        false,
+        error
+    );
 
 });
 
@@ -1061,15 +1147,37 @@ player.on("setupError",(error) => {
    RECONNECT
 ========================================================= */
 
-function reconnect(initial,error){
+function reconnect(
+    initial,
+    error
+){
 
-    if(destroyed){
+    if(pageDestroyed){
         return;
     }
 
     /*
-     * Don't create multiple reconnect timers.
+     * Don't reconnect while fullscreen is transitioning.
      */
+
+    if(fullscreenTransition){
+
+        setTimeout(() => {
+
+            reconnect(
+                initial,
+                error
+            );
+
+        },1000);
+
+        return;
+    }
+
+    /*
+     * Prevent duplicate reconnect.
+     */
+
     if(reconnecting){
         return;
     }
@@ -1091,117 +1199,81 @@ function reconnect(initial,error){
     const delay =
         Math.min(
             CONFIG.reconnectBase *
-            Math.pow(1.45,retryCount - 1),
+            Math.pow(
+                1.45,
+                retryCount - 1
+            ),
             CONFIG.reconnectMax
         );
 
     statusEl.textContent =
         `RECONNECTING (${retryCount}/${CONFIG.maxRetries})`;
 
-    if(hasPlayed || !initial){
-
-        showLoader();
-
-    }
+    showLoader();
 
     clearTimeout(retryTimer);
 
-    retryTimer = setTimeout(() => {
+    retryTimer =
+        setTimeout(() => {
 
-        if(destroyed){
-            return;
-        }
-
-        try{
+            if(pageDestroyed){
+                return;
+            }
 
             /*
-             * Stop current playback first.
-             * This avoids multiple active requests.
+             * IMPORTANT:
+             *
+             * load() is ONLY executed here
+             * after a real error/reconnect condition.
+             *
+             * Normal screen touch cannot trigger this.
              */
 
             try{
-                player.stop();
-            }catch(e){}
 
-            /*
-             * Reload only one source.
-             */
-            player.load([
-                playlistItem
-            ]);
+                player.load([
+                    playlistItem
+                ]);
 
-            /*
-             * Start playback after load.
-             */
-            const playResult =
-                player.play(true);
+                const playPromise =
+                    player.play(true);
 
-            /*
-             * Some browsers return a Promise.
-             * Ignore autoplay rejection.
-             */
-            if(
-                playResult &&
-                typeof playResult.catch === "function"
-            ){
+                if(
+                    playPromise &&
+                    typeof playPromise.catch ===
+                    "function"
+                ){
 
-                playResult.catch(() => {});
+                    playPromise.catch(
+                        () => {}
+                    );
+
+                }
+
+            }catch(e){
+
+                console.warn(
+                    "Reconnect failed:",
+                    e
+                );
 
             }
 
-        }catch(e){
+            reconnecting = false;
 
-            console.warn(
-                "Reconnect failed:",
-                e
-            );
-
-        }
-
-        reconnecting = false;
-
-    },delay);
+        },delay);
 
 }
 
 /* =========================================================
-   PREVENT DOUBLE TAP ZOOM
-========================================================= */
-
-document.addEventListener(
-    "dblclick",
-    (event) => {
-
-        const target =
-            event.target;
-
-        if(
-            target &&
-            (
-                target.tagName === "VIDEO" ||
-                target.closest("#player")
-            )
-        ){
-
-            event.preventDefault();
-
-        }
-
-    },
-    {
-        passive:false
-    }
-);
-
-/* =========================================================
-   CLEANUP
+   PAGE CLEANUP
 ========================================================= */
 
 window.addEventListener(
     "pagehide",
     () => {
 
-        destroyed = true;
+        pageDestroyed = true;
 
         clearTimeout(retryTimer);
         clearTimeout(initialTimer);
