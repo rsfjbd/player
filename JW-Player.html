@@ -3,431 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-    <title>RS Player Pro</title>
+    <title>RS Player Pro - Compact Loader</title>
 
     <script src="https://content.jwplatform.com/libraries/IDzF9Zmk.js"></script>
     <script>
         jwplayer.key = "Khpp2dHxlBJHC8MCmLnBuV2jK/DwDnJMniwF6EO9HC/riJ712ZmbHg==";
     </script>
 
-    <link rel="preconnect" href="https://content.jwplatform.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        :root{
-            --bg-1: #0a0a12;
-            --bg-2: #14101f;
-            --grad-a: #22d3ee;
-            --grad-b: #a78bfa;
-            --grad-c: #fb923c;
-            --warn: #ffb84d;
-            --alert: #ff5d5d;
-            --text: #eef0f7;
-            --text-dim: #7a7a92;
-            --font: 'Poppins','Segoe UI',sans-serif;
-            --mono: 'JetBrains Mono','Courier New',monospace;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        *{ margin:0; padding:0; box-sizing:border-box; }
-        html,body{
-            width:100%; height:100%;
-            background:var(--bg-1);
-            overflow:hidden;
-            font-family:var(--font);
-            position:fixed;
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            position: fixed;
         }
 
-        #player-wrapper{
-            position:relative;
-            width:100%; height:100%;
-            overflow:hidden;
-            background:#000;
+        #player-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
-        #player{
-            width:100% !important;
-            height:100% !important;
-            position:absolute;
-            top:0; left:0;
-            touch-action: manipulation; /* suppress native double-tap zoom/fullscreen gesture */
-        }
-        #player video{
-            touch-action: manipulation;
+        #player {
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        /* ---------- JW controlbar skin ---------- */
-        .jw-skin-glow .jw-display-icon-container{
-            background: rgba(167,139,250,0.10) !important;
-            border: 1px solid rgba(167,139,250,0.4);
+        /* --- কন্ট্রোলার কাস্টমাইজেশন --- */
+        .jw-skin-glow .jw-display-icon-container {
+            display: none !important; /* সেন্টারের বড় প্লে/পজ আইকন সম্পূর্ণ বাদ */
+        }
+        .jw-skin-glow .jw-button-color {
+            color: #ffffff !important;
+        }
+        .jw-skin-glow .jw-controlbar {
+            background: transparent !important;
             backdrop-filter: none !important;
         }
-        .jw-skin-glow .jw-button-color{ color:#ffffff !important; }
-        .jw-skin-glow .jw-controlbar{
-            background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent) !important;
-            backdrop-filter: none !important;
-        }
-        .jw-skin-glow .jw-slider-time .jw-progress{ background: var(--grad-b) !important; }
-        .jw-skin-glow .jw-knob{ background: var(--grad-b) !important; }
 
-        .jw-video.jw-reset{ object-fit: fill !important; }
-
-        /* ================= LOADER ================= */
-        #loader{
-            position:absolute; inset:0;
-            background: radial-gradient(80% 60% at 50% 40%, var(--bg-2) 0%, var(--bg-1) 70%);
-            display:flex; justify-content:center; align-items:center;
-            flex-direction:column;
-            z-index:99;
-            transition: opacity .5s ease, visibility .5s ease;
+        /* --- লোডার ডিজাইন --- */
+        #loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99;
+            flex-direction: column;
+            transition: opacity 0.4s ease;
         }
 
-        .tuner{
-            display:flex; flex-direction:column;
-            align-items:center;
-            gap:20px;
+        .loader-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* signature element — TV set with a looping colour-bar screen, glowing frame */
-        .tv-wrap{
-            position:relative;
-            width:78px; height:78px;
-            display:flex; align-items:center; justify-content:center;
+        .loader-brand {
+            text-align: center;
+            z-index: 10;
         }
-        .tv-glow{
-            position:absolute;
-            width:100%; height:100%;
-            border-radius:50%;
-            background: radial-gradient(circle, rgba(167,139,250,0.35), transparent 70%);
-            animation: glow-pulse 2.4s ease-in-out infinite;
+        .tv-icon {
+            font-size: 24px;
+            color: #00c3ff;
+            text-shadow: 0 0 10px #00c3ff;
         }
-        @keyframes glow-pulse{
-            0%,100%{ transform:scale(0.85); opacity:.5; }
-            50%{ transform:scale(1.15); opacity:1; }
+        .brand-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            margin-top: 5px;
+            letter-spacing: 1px;
         }
-        .tv-icon{ position:relative; width:60px; height:60px; }
-        .tv-icon .tv-body{
-            fill:none;
-            stroke: var(--text);
-            stroke-width:2;
-            stroke-linecap:round;
-            stroke-linejoin:round;
-        }
-        .tv-icon .screen-bars rect{
-            transform-origin: bottom;
-            animation: bar-flicker 1.6s ease-in-out infinite;
-        }
-        .tv-icon .screen-bars rect:nth-child(1){ fill:var(--grad-a); animation-delay:-1.2s; }
-        .tv-icon .screen-bars rect:nth-child(2){ fill:var(--grad-b); animation-delay:-0.9s; }
-        .tv-icon .screen-bars rect:nth-child(3){ fill:var(--grad-c); animation-delay:-0.6s; }
-        .tv-icon .screen-bars rect:nth-child(4){ fill:var(--grad-b); animation-delay:-0.3s; }
-        .tv-icon .screen-bars rect:nth-child(5){ fill:var(--grad-a); animation-delay:0s; }
-        @keyframes bar-flicker{
-            0%,100%{ transform: scaleY(0.45); opacity:.65; }
-            50%{ transform: scaleY(1); opacity:1; }
+        .brand-name span {
+            color: #00c3ff;
         }
 
-        .brand-name{
-            font-size:15px; font-weight:700;
-            letter-spacing:1px;
-            text-transform:uppercase;
-            background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
-            -webkit-background-clip:text;
-            background-clip:text;
-            color:transparent;
+        .neon-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            animation: rotate-vortex 1.5s linear infinite;
         }
-        .brand-name b{ color:var(--text); -webkit-text-fill-color:var(--text); }
-
-        /* three softly pulsing dots — the only loading indicator, no cycling text */
-        .dots{
-            display:flex; gap:6px;
+        .neon-ring:nth-child(1) {
+            border-top: 2px solid #00c3ff;
+            border-right: 2px solid #00c3ff;
+            box-shadow: 0 0 10px #00c3ff;
         }
-        .dots span{
-            width:6px; height:6px;
-            border-radius:50%;
-            background: var(--grad-b);
-            animation: dot-pulse 1.2s ease-in-out infinite;
-        }
-        .dots span:nth-child(1){ animation-delay:0s; }
-        .dots span:nth-child(2){ animation-delay:.2s; }
-        .dots span:nth-child(3){ animation-delay:.4s; }
-        @keyframes dot-pulse{
-            0%,80%,100%{ transform:scale(0.6); opacity:.35; }
-            40%{ transform:scale(1); opacity:1; }
+        .neon-ring:nth-child(2) {
+            border-bottom: 2px solid #ff007f;
+            border-left: 2px solid #ff007f;
+            animation-direction: reverse;
+            animation-duration: 2s;
+            box-shadow: 0 0 10px #ff007f;
         }
 
-        .status-line{
-            font-family:var(--mono);
-            font-size:9.5px;
-            letter-spacing:2.5px;
-            color:var(--text-dim);
-            text-transform:uppercase;
+        @keyframes rotate-vortex {
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
-        .hide-now{ opacity:0 !important; visibility:hidden !important; }
+        .loading-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 10px;
+            margin-top: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-        /* ---------- error / empty states ---------- */
-        .state-content{
-            text-align:center;
-            color: var(--text);
-            z-index:100;
-            padding: 0 24px;
-            font-family:var(--font);
+        /* --- ভিডিও সাইড কাটা ফিক্স --- */
+        .jw-video.jw-reset {
+            object-fit: fill !important;
         }
-        .state-content .glyph{
-            font-size:34px;
-            color: var(--alert);
-            margin-bottom:14px;
-            line-height:1;
-        }
-        .state-content .glyph.warn{ color: var(--warn); }
-        .state-content p.title{
-            font-size:13px;
-            letter-spacing:1px;
-            font-weight:600;
-        }
-        .state-content p.sub{
-            font-family:var(--mono);
-            font-size:10.5px;
-            color: var(--text-dim);
-            margin-top:8px;
-            letter-spacing:.5px;
-            max-width:280px;
-        }
-        .state-content .brand-name{ display:block; margin-top:18px; }
 
-        .retry-btn{
-            margin-top:16px;
-            padding:8px 20px;
-            font-family:var(--font);
-            font-weight:600;
-            font-size:11px;
-            letter-spacing:.5px;
-            color:#0a0a12;
-            background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
-            border:none;
-            border-radius:18px;
-            cursor:pointer;
+        .hide-now {
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
-        .retry-btn:active{ transform: scale(0.96); }
+
+        /* এরর মেসেজ */
+        .error-content {
+            text-align: center;
+            color: #fff;
+            z-index: 100;
+        }
+        .error-content i {
+            font-size: 40px;
+            color: #ff4d4d;
+            margin-bottom: 15px;
+        }
+
+        .desktop-error {
+            color: #ff6b6b;
+            text-align: center;
+            padding: 20px;
+        }
+        .desktop-error i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .desktop-error .small-text {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
 
     <div id="player-wrapper">
         <div id="loader">
-            <div class="tuner">
-                <div class="tv-wrap">
-                    <div class="tv-glow"></div>
-                    <svg class="tv-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <path class="tv-body" d="M22 12 32 20 42 12"/>
-                        <clipPath id="screenClip"><rect x="12" y="20" width="40" height="26" rx="4"/></clipPath>
-                        <g class="screen-bars" clip-path="url(#screenClip)">
-                            <rect x="12" y="20" width="8" height="26"/>
-                            <rect x="20" y="20" width="8" height="26"/>
-                            <rect x="28" y="20" width="8" height="26"/>
-                            <rect x="36" y="20" width="8" height="26"/>
-                            <rect x="44" y="20" width="8" height="26"/>
-                        </g>
-                        <rect class="tv-body" x="12" y="20" width="40" height="26" rx="4"/>
-                        <line class="tv-body" x1="24" y1="46" x2="24" y2="50"/>
-                        <line class="tv-body" x1="40" y1="46" x2="40" y2="50"/>
-                        <line class="tv-body" x1="20" y1="50" x2="44" y2="50"/>
-                    </svg>
+            <div class="loader-container">
+                <div class="neon-ring"></div>
+                <div class="neon-ring"></div>
+                <div class="loader-brand">
+                    <i class="fas fa-tv tv-icon"></i>
+                    <div class="brand-name">RS LIVE <span>TV</span></div>
                 </div>
-                <div class="brand-name"><b>RS LIVE</b> TV</div>
-                <div class="dots"><span></span><span></span><span></span></div>
-                <div class="status-line" id="status-line">LOADING</div>
             </div>
+            <div class="loading-text">BUFFERING...</div>
         </div>
         <div id="player"></div>
     </div>
 
     <script>
-        const urlParams   = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(window.location.search);
         const streamSource = urlParams.get('url');
-        const forcedType   = (urlParams.get('type') || '').toLowerCase();
-        const startMuted   = urlParams.get('mute') === '1'; // plays with sound on by default now
+        // 'live' বা 'vod' প্যারামিটার না দিলে অটো ডিটেক্ট করবে (m3u8 এক্সটেনশনে "live" শব্দ না থাকলে VOD ধরা হবে)
+        const forcedType = (urlParams.get('mode') || '').toLowerCase(); // 'live' | 'vod' | ''
 
-        const loaderEl    = document.getElementById('loader');
-        const statusEl    = document.getElementById('status-line');
+        if (streamSource) {
+            const isDesktop = !/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
-        const statusMessages = ['LOADING', 'BUFFERING', 'CONNECTING'];
-        let statusIdx = 0;
-        let statusTimer = setInterval(() => {
-            statusIdx = (statusIdx + 1) % statusMessages.length;
-            statusEl.textContent = statusMessages[statusIdx];
-        }, 1800);
+            if (isDesktop) {
+                console.log('🖥️ Desktop detected - trying to load stream with HLS');
+            }
 
-        function showLoader(){ loaderEl.classList.remove('hide-now'); }
-        function hideLoader(){ loaderEl.classList.add('hide-now'); }
+            // লাইভ নাকি পুরনো/রেকর্ডেড (VOD) ভিডিও সেটা ঠিক করা
+            let streamType = "vod";
+            if (forcedType === "live") {
+                streamType = "live";
+            } else if (forcedType === "vod") {
+                streamType = "vod";
+            } else if (/live|stream/i.test(streamSource)) {
+                streamType = "live";
+            }
 
-        function showState(html){
-            clearInterval(statusTimer);
-            showLoader();
-            loaderEl.innerHTML = html;
-        }
-
-        function brandBlock(){
-            return '<div class="brand-name"><b>RS LIVE</b> TV</div>';
-        }
-
-        // ---- detect stream type from the URL so every common link works ----
-        function detectType(raw){
-            if (forcedType) return forcedType;
-            const clean = raw.split('?')[0].split('#')[0].toLowerCase();
-            if (clean.endsWith('.m3u8'))            return 'hls';
-            if (clean.endsWith('.mpd'))             return 'dash';
-            if (clean.endsWith('.mp4'))             return 'mp4';
-            if (clean.endsWith('.webm'))            return 'webm';
-            if (clean.endsWith('.mov'))             return 'mp4';
-            if (clean.endsWith('.ogg') || clean.endsWith('.ogv')) return 'ogg';
-            if (raw.includes('.m3u8'))              return 'hls'; // token stream: .m3u8?token=...
-            if (raw.includes('.mpd'))               return 'dash';
-            return null; // let JW Player auto-sniff anything else
-        }
-
-        if (!streamSource) {
-            showState(
-                '<div class="state-content">' +
-                    '<div class="glyph warn"><i>&#9888;</i></div>' +
-                    '<p class="title">No stream URL supplied</p>' +
-                    '<p class="sub">Add ?url=YOUR_STREAM_LINK to this page\'s address.</p>' +
-                    brandBlock() +
-                '</div>'
-            );
-        } else {
-            const streamType = detectType(streamSource);
-
-            const playlistItem = { file: streamSource };
-            if (streamType) playlistItem.type = streamType;
-
-            const player = jwplayer('player').setup({
-                playlist: [ playlistItem ],
-                width: '100%',
-                height: '100%',
+            const player = jwplayer("player").setup({
+                playlist: [{
+                    file: streamSource,
+                    type: "hls"
+                }],
+                width: "100%",
+                height: "100%",
                 autostart: true,
-                mute: startMuted,          // sound on by default now — plays audibly right away
-                preload: 'auto',
-                stretching: 'uniform',      // less GPU-heavy than exactfit; reduces resize hitches on fullscreen toggle
-                liveTimeout: 0,            // never auto-stop a live feed on its own
-                skin: { name: 'glow' },
-                displaytitle: false
+                stretching: "exactfit",
+                skin: { name: "glow" },
+                displaytitle: false,
+                displaydescription: false,
+                // লাইভের জন্য streamtype লাইভ দেখাবে, পুরনো ভিডিওর জন্য সাধারণ VOD সিকবার দেখাবে
+                liveTimeout: streamType === "live" ? 0 : undefined
             });
 
-            let retryCount = 0;
-            const maxRetries = 6;
-            let retryTimer = null;
-            let everPlayed = false;
-
-            // if nothing plays within this window, stop retrying and tell the user the link won't play
-            const NO_STREAM_TIMEOUT = 10000;
-            let noStreamTimer = setTimeout(() => {
-                if (!everPlayed) showNoStreamState();
-            }, NO_STREAM_TIMEOUT);
-
-            player.on('ready', () => {
-                console.log('Player ready — source type:', streamType || 'auto-detected');
+            player.on("ready", () => {
+                player.setMute(false);
+                player.setVolume(100);
+                console.log('✅ Player ready, mode:', streamType);
             });
 
-            player.on('firstFrame', () => {
-                clearInterval(statusTimer);
-                clearTimeout(noStreamTimer);
-                hideLoader();
-                everPlayed = true;
-                retryCount = 0;
-                console.log('First frame painted');
+            player.on("play", () => {
+                document.getElementById("loader").classList.add("hide-now");
+                console.log('▶️ Playing');
             });
 
-            player.on('play', () => {
-                clearTimeout(noStreamTimer);
-                everPlayed = true;
-                hideLoader();
+            player.on("buffer", () => {
+                document.getElementById("loader").classList.remove("hide-now");
+                console.log('⏳ Buffering...');
             });
 
-            // Only show the full loader overlay if buffering lasts longer than
-            // this many ms — avoids flashing the loader (feels like a "hang")
-            // on very brief, harmless buffer blips.
-            const BUFFER_SHOW_DELAY = 400;
-            let bufferShowTimer = null;
+            // ভিডিও শেষ হলে (VOD-এর ক্ষেত্রে প্রযোজ্য)
+            player.on("complete", () => {
+                console.log('✅ Playback complete');
+            });
 
-            player.on('ready', () => {
-                const videoEl = document.querySelector('#player video');
-                if (videoEl) {
-                    videoEl.addEventListener('dblclick', function(e){
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }, true);
+            player.on("error", (error) => {
+                const loader = document.getElementById("loader");
+                loader.classList.remove("hide-now");
+
+                if (isDesktop) {
+                    loader.innerHTML = `
+                        <div class="error-content desktop-error">
+                            <i class="fas fa-desktop"></i>
+                            <p>⚠️ Stream may not be available on desktop.</p>
+                            <p style="font-size:14px;color:#94a3b8;margin-top:5px;">Please try on mobile device.</p>
+                            <div class="brand-name" style="margin-top:15px;">RS LIVE <span>TV</span></div>
+                            <p style="font-size:11px;color:#64748b;margin-top:10px;">Error: ${error.message || 'Unknown error'}</p>
+                        </div>
+                    `;
+                } else {
+                    loader.innerHTML = `
+                        <div class="error-content">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Stream Offline!</p>
+                            <div class="brand-name">RS LIVE <span>TV</span></div>
+                        </div>
+                    `;
                 }
+                console.error('❌ Player error:', error);
             });
 
-            let inFullscreenTransition = false;
-
-            player.on('buffer', () => {
-                if (inFullscreenTransition) return; // skip loader flash caused by fullscreen resize
-                clearTimeout(bufferShowTimer);
-                bufferShowTimer = setTimeout(showLoader, BUFFER_SHOW_DELAY);
-            });
-            player.on('play', () => {
-                clearTimeout(bufferShowTimer);
-            });
-            player.on('firstFrame', () => {
-                clearTimeout(bufferShowTimer);
-            });
-
-            // JW fires 'fullscreen' with {fullscreen: true/false} right as the
-            // transition starts. Give the resize/reflow a short grace window
-            // where we won't pop the loader overlay for the expected hitch.
-            player.on('fullscreen', (evt) => {
-                inFullscreenTransition = true;
-                clearTimeout(bufferShowTimer);
-                hideLoader();
-                setTimeout(() => { inFullscreenTransition = false; }, 1200);
-            });
-
-            player.on('error', handleFault);
-            player.on('setupError', handleFault);
-
-            function handleFault(err){
-                console.error('Player error:', err);
-
-                if (!everPlayed) {
-                    // still inside the initial window — try again quickly, but never past NO_STREAM_TIMEOUT
-                    clearTimeout(retryTimer);
-                    retryTimer = setTimeout(() => {
-                        player.load([ playlistItem ]);
-                        player.play(true);
-                    }, 900);
-                    return;
-                }
-
-                // stream had already been playing (e.g. a live feed dropped) — retry with backoff
-                if (retryCount < maxRetries) {
-                    retryCount++;
-                    statusEl.textContent = 'RECONNECTING (' + retryCount + '/' + maxRetries + ')';
-                    showLoader();
-                    clearTimeout(retryTimer);
-                    retryTimer = setTimeout(() => {
-                        player.load([ playlistItem ]);
-                        player.play(true);
-                    }, Math.min(1000 * retryCount, 4000));
-                    return;
-                }
-
-                showNoStreamState(err);
-            }
-
-            function showNoStreamState(err){
-                clearTimeout(retryTimer);
-                clearTimeout(noStreamTimer);
-                showState(
-                    '<div class="state-content">' +
-                        '<div class="glyph"><i>&#10060;</i></div>' +
-                        '<p class="title">No streaming — this link won\'t play</p>' +
-                        '<p class="sub">' + ((err && err.message) ? err.message : 'The source could not be reached.') + '</p>' +
-                        '<button class="retry-btn" onclick="location.reload()">Retry</button>' +
-                        brandBlock() +
-                    '</div>'
-                );
-            }
+        } else {
+            document.getElementById("loader").innerHTML = '<div class="brand-name">No Stream URL Found</div>';
         }
     </script>
 
 </body>
-      </html>
+    </html>
